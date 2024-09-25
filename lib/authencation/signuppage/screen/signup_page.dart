@@ -7,7 +7,6 @@ import 'package:newsapp/authencation/loginpage/widgets/icon_button_widgets.dart'
 import 'package:newsapp/authencation/signuppage/widgets/password_form_field.dart';
 import 'package:newsapp/authencation/signuppage/widgets/signup_bttn.dart';
 
-
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
 
@@ -66,6 +65,7 @@ class _SignupPageState extends State<SignupPage> {
               SignupBttn(
                 emailController: emailController,
                 passwordController: passwordController,
+                confirmPasswordController: confirmPasswordController,
               ),
               const SizedBox(height: 10),
               const Center(

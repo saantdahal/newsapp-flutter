@@ -5,11 +5,13 @@ import 'package:shared_preferences/shared_preferences.dart'; // Import the page 
 class SignupBttn extends StatelessWidget {
   final TextEditingController emailController;
   final TextEditingController passwordController;
+  final TextEditingController confirmPasswordController; // Add this line
 
   const SignupBttn({
     super.key,
     required this.emailController,
     required this.passwordController,
+    required this.confirmPasswordController, // Add this line
   });
 
   // Email validation function
@@ -38,9 +40,11 @@ class SignupBttn extends StatelessWidget {
         onPressed: () {
           String email = emailController.text;
           String password = passwordController.text;
+          String confirmPassword =
+              confirmPasswordController.text; // Add this line
 
           // Check if fields are empty
-          if (email.isEmpty || password.isEmpty) {
+          if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Please fill all fields')),
             );
@@ -56,6 +60,12 @@ class SignupBttn extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                   content: Text('Password must be at least 6 characters long')),
+            );
+          }
+          // Check if the passwords match
+          else if (password != confirmPassword) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Passwords do not match')),
             );
           }
           // If everything is valid, store data and navigate
