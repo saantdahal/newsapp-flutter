@@ -3,7 +3,6 @@ import 'package:newsapp/authencation/contactPage/screen/contact_page.dart';
 import 'package:newsapp/authencation/defaultpage/widgets/login_button.dart';
 import 'package:newsapp/authencation/defaultpage/widgets/signup_button.dart';
 import 'package:newsapp/authencation/signuppage/screen/show_data_page.dart';
-import 'package:newsapp/news_app_home/screen/dashboard_page.dart';
 
 class MainLoginPage extends StatelessWidget {
   const MainLoginPage({super.key});
