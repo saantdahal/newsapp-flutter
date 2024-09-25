@@ -1,30 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:newsapp/api/api.dart';
 import 'package:newsapp/news_app_home/model/newsapp_model.dart';
-import 'package:newsapp/news_app_home/widgets/Recommended_news_list.dart';
-import 'package:newsapp/news_app_home/widgets/bottom_navigationbar.dart';
-import 'package:newsapp/news_app_home/widgets/circle_avatar.dart';
-import 'package:newsapp/news_app_home/widgets/horizontal_news_sliding.dart';
-import 'package:newsapp/news_app_home/widgets/news_category.dart';
-import 'dart:io';
-import 'package:newsapp/news_app_home/widgets/text_form_field.dart'; // Import custom widgets
+import 'package:newsapp/news_app_home/provider/favnews_provider.dart';
+import 'package:newsapp/news_app_home/widgets/hori.dart';
+import 'package:provider/provider.dart';
 
 class NewsApp extends StatefulWidget {
   const NewsApp({super.key});
 
   @override
-  NewsAppState createState() => NewsAppState();
+  State<NewsApp> createState() => _NewsHomePageState();
 }
 
-class NewsAppState extends State<NewsApp> {
+class _NewsHomePageState extends State<NewsApp> {
   List<Articles>? articleList = [];
+
   bool isLoading = false;
-  final ApiService apiService = ApiService();
-  final TextEditingController searchController = TextEditingController();
-  final ImagePicker _picker = ImagePicker();
-  File? _image;
-  Future<List<Articles>?>? _newsArticles;
+
+  ApiService apiService = ApiService();
+
+  void getArticleList() async {
+    try {
+      isLoading = true;
+      articleList = await apiService.fetchNews();
+    } catch (e) {
+      debugPrint(e.toString());
+    } finally {
+      isLoading = false;
+      setState(() {});
+    }
+  }
 
   @override
   void initState() {
@@ -32,166 +37,192 @@ class NewsAppState extends State<NewsApp> {
     getArticleList();
   }
 
-  Future<void> getArticleList() async {
-    setState(() {
-      isLoading = true;
-    });
-    try {
-      articleList = await apiService.fetchNews();
-      _newsArticles = Future.value(articleList);
-    } catch (e) {
-      debugPrint(e.toString());
-    } finally {
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
-
-  @override
-  void dispose() {
-    searchController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _pickImage(ImageSource source) async {
-    final pickedFile = await _picker.pickImage(source: source);
-    if (pickedFile != null) {
-      setState(() {
-        _image = File(pickedFile.path);
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        backgroundColor: Colors.white,
-        child: ListView(
-          children: <Widget>[
-            DrawerHeader(
-              decoration: const BoxDecoration(color: Colors.blue),
-              child: Column(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              ListTile(
-                                leading: const Icon(Icons.photo_library),
-                                title: const Text('Pick from Gallery'),
-                                onTap: () {
-                                  _pickImage(ImageSource.gallery);
-                                  Navigator.pop(context);
-                                },
-                              ),
-                              ListTile(
-                                leading: const Icon(Icons.camera_alt),
-                                title: const Text('Take a Picture'),
-                                onTap: () {
-                                  _pickImage(ImageSource.camera);
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                    child: circleAvaterWidgets(image: _image),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Nisila',
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ),
-                ],
+      drawer: Drawer(),
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Good Morning, ',
+              style: TextStyle(
+                color: Colors.blue,
+                fontWeight: FontWeight.bold,
+                fontSize: 25,
               ),
             ),
-            // Add other Drawer items here...
+            Text(
+              'Nisola',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
           ],
         ),
-      ),
-      appBar: AppBar(
-        title: RichText(
-          text: const TextSpan(
-            children: [
-              TextSpan(
-                text: 'Good Morning, ',
-                style: TextStyle(
-                    color: Colors.blue,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20),
-              ),
-              TextSpan(
-                text: 'Nisila',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20),
-              ),
-            ],
-          ),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.notifications_active_outlined),
-            onPressed: () {
-              debugPrint("Notification icon pressed");
-            },
-          ),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Icon(Icons.notification_add),
+          )
         ],
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextFormFieldWidgets(searchController: searchController),
-              const SizedBox(height: 20),
-              const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Discovery',
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-                  Text('Enjoy Morning Coffee with News'),
-                ],
-              ),
-              const SizedBox(height: 10),
-              HorizantalNewsSliding(newsArticles: _newsArticles),
-              const SizedBox(height: 20),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5.0),
-                child: NewsCategory(),
-              ),
-              const SizedBox(height: 20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Recommended',
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.4,
-                    child: RecommendedNews(articleList: articleList),
+          padding: const EdgeInsets.all(20),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Row(
+              children: [
+                Expanded(
+                  child: SearchBar(
+                    padding: const WidgetStatePropertyAll<EdgeInsets>(
+                        EdgeInsets.symmetric(horizontal: 20)),
+                    onTap: () {},
+                    trailing: <Widget>[
+                      ElevatedButton(
+                        onPressed: () {},
+                        style: TextButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromARGB(255, 128, 33, 243),
+                            foregroundColor: Colors.white),
+                        child: const Text("Search"),
+                      )
+                    ],
+                    leading: const Icon(Icons.search),
                   ),
-                ],
+                ),
+              ],
+            ),
+            const Text(
+              "Discovery",
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            ),
+            const Text(
+              "Enjoy news with morning cofee",
+              style: TextStyle(color: Colors.grey),
+            ),
+            FutureBuilder(
+                future: ApiService().fetchNews(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (snapshot.hasError) {
+                    return const Center(
+                      child: Text("Error fetching data"),
+                    );
+                  } else if (snapshot.hasData) {
+                    final newsList = snapshot.data!;
+                    return SizedBox(
+                      height: 200,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: newsList.length,
+                        itemBuilder: (context, index) {
+                          final newsItem = newsList[index];
+                          final Map<String, String> newsItemMap = {
+                            'imageurl': newsItem.urlToImage ??
+                                'No image available', // Provide default image if null
+                            'headLine':
+                                newsItem.title ?? 'No headline available',
+                            'publishedAt': newsItem.publishedAt ??
+                                "Day of publishment unavailable",
+                            'news': newsItem.description ??
+                                'No news description available',
+                          };
+                          //horizontal news feed
+
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                '/newsPage',
+                                arguments: newsItemMap,
+                              );
+                            },
+                            // Pass the fetched API data to the widget
+                            child: HorizontalNewsWidget(newsItem: newsItem),
+                          );
+                        },
+                      ),
+                    );
+                  }
+                  return const SizedBox();
+                }),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(onPressed: () {}, child: const Text('All')),
+                ElevatedButton(
+                    onPressed: () {}, child: const Text('Technology')),
+                ElevatedButton(onPressed: () {}, child: const Text('Sports')),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Recommended",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                TextButton(
+                    onPressed: () {},
+                    child: const Text(
+                      "View All",
+                      style: TextStyle(color: Colors.blue),
+                    )),
+              ],
+            ),
+            //using articleList to acess the api by object rather than a future builder
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.4,
+              child: ListView.builder(
+                itemCount: articleList?.length ?? 0,
+                itemBuilder: (context, index) {
+                  final newsItem = articleList?[index];
+                  final Map<String, String> newsItemMap = {
+                    'imageurl': newsItem?.urlToImage ?? 'No image available',
+                    'headLine': newsItem?.title ?? 'No headline available',
+                    'publishedAt': newsItem?.publishedAt ??
+                        "Day of publishment unavailable",
+                    'news': newsItem?.description ??
+                        'No news description available',
+                  };
+                  //vertical newsfeed
+                  return VerticalNewsWidget(
+                      newsItemMap: newsItemMap, newsItem: newsItem);
+                },
               ),
-            ],
-          ),
+            ),
+          ]),
         ),
       ),
-      bottomNavigationBar: const ButtomNavigationBarWidgets(),
+      bottomNavigationBar: BottomNavigationBar(items: <BottomNavigationBarItem>[
+        const BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+        const BottomNavigationBarItem(icon: Icon(Icons.search), label: "Home"),
+        //reusable widget for fav icon
+        BottomNavigationBarItem(
+            icon: Consumer<FavNewsProvider>(
+                builder: (context, favNewsProvider, child) {
+              return Stack(children: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/favNewsPage');
+                    },
+                    icon: const Icon(
+                      Icons.favorite,
+                      color: Colors.red,
+                    )),
+                Text(
+                  '${favNewsProvider.favArticleList?.length ?? 0}',
+                  style: const TextStyle(color: Colors.red, fontSize: 20),
+                )
+              ]);
+            }),
+            label: "Favourites"),
+      ]),
     );
   }
 }
