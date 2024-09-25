@@ -11,53 +11,55 @@ class MainLoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Column(
-        children: [
-          Image.asset(
-            'assets/login.png',
-            height: 600,
-            width: 600,
-          ),
-          // button for login
-          LoginButton(),
-          const SizedBox(
-            height: 10,
-          ),
-          //Button for signup
-          SignupButton(),
-
-          const SizedBox(
-            height: 25,
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const NewsApp()),
-              );
-            },
-            child: const Text(
-              "Continue as a guest?",
-              style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500
-                  // decoration: TextDecoration.underline,
-                  ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Image.asset(
+              'assets/login.png',
+              height: 600,
+              width: 600,
             ),
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ContactPage()),
-              );
-            },
-            child: const Text(
-              "Contact Us",
-              style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500
-                  // decoration: TextDecoration.underline,
-                  ),
+            // button for login
+            LoginButton(),
+            const SizedBox(
+              height: 10,
             ),
-          ),
-        ],
+            //Button for signup
+            SignupButton(),
+        
+            const SizedBox(
+              height: 25,
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const NewsApp()),
+                );
+              },
+              child: const Text(
+                "Continue as a guest?",
+                style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w500
+                    // decoration: TextDecoration.underline,
+                    ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ContactPage()),
+                );
+              },
+              child: const Text(
+                "Contact Us",
+                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500
+                    // decoration: TextDecoration.underline,
+                    ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
