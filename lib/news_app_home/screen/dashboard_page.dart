@@ -200,8 +200,18 @@ class _NewsHomePageState extends State<NewsApp> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(items: <BottomNavigationBarItem>[
-        const BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-        const BottomNavigationBarItem(icon: Icon(Icons.search), label: "Home"),
+        const BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home_filled,
+              color: Colors.blue,
+            ),
+            label: "Home"),
+        const BottomNavigationBarItem(
+            icon: Icon(
+              Icons.download_for_offline,
+              color: Colors.blue,
+            ),
+            label: "Downloads"),
         //reusable widget for fav icon
         BottomNavigationBarItem(
             icon: Consumer<FavNewsProvider>(
@@ -213,11 +223,11 @@ class _NewsHomePageState extends State<NewsApp> {
                     },
                     icon: const Icon(
                       Icons.favorite,
-                      color: Colors.red,
+                      color: Colors.blue,
                     )),
                 Text(
                   '${favNewsProvider.favArticleList?.length ?? 0}',
-                  style: const TextStyle(color: Colors.red, fontSize: 20),
+                  style: const TextStyle(color: Colors.blue, fontSize: 12),
                 )
               ]);
             }),
