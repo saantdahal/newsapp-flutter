@@ -6,11 +6,11 @@ class HorizontalNewsWidget extends StatelessWidget {
   const HorizontalNewsWidget({
     super.key,
     required this.newsItem,
-    required this.onSave,  // Add onSave callback
+    required this.onSave, // Add onSave callback
   });
 
   final Articles newsItem;
-  final VoidCallback onSave;  // Save callback
+  final VoidCallback onSave; // Save callback
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +67,8 @@ class HorizontalNewsWidget extends StatelessWidget {
                 children: [
                   // Save button to save the article to the database
                   IconButton(
-                    icon: const Icon(Icons.save, color: Colors.white),
-                    onPressed: onSave,  // Call the onSave callback when pressed
+                    icon: const Icon(Icons.save, color: Colors.blue),
+                    onPressed: onSave, // Call the onSave callback when pressed
                   ),
                 ],
               ),

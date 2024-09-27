@@ -170,26 +170,38 @@ class _NewsHomePageState extends State<NewsApp> {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.4,
               child: ListView.builder(
-                itemCount: articleList?.length ?? 0,
-                itemBuilder: (context, index) {
-                  final newsItem = articleList?[index];
-                  final Map<String, String> newsItemMap = {
-                    'imageurl': newsItem?.urlToImage ?? 'No image available',
-                    'headLine': newsItem?.title ?? 'No headline available',
-                    'publishedAt': newsItem?.publishedAt ??
-                        "Day of publishment unavailable",
-                    'news': newsItem?.description ??
-                        'No news description available',
-                  };
-                  //vertical newsfeed
-                  return VerticalNewsWidget(
-                      newsItemMap: newsItemMap, newsItem: newsItem);
-                },
-              ),
+  itemCount: articleList?.length ?? 0,
+  itemBuilder: (context, index) {
+    final newsItem = articleList?[index];
+    final Map<String, String> newsItemMap = {
+      'imageurl': newsItem?.urlToImage ?? 'No image available',
+      'headLine': newsItem?.title ?? 'No headline available',
+      'publishedAt': newsItem?.publishedAt ?? "Day of publishment unavailable",
+      'news': newsItem?.description ?? 'No news description available',
+    };
+
+    // Vertical newsfeed with save functionality
+    return VerticalNewsWidget(
+      newsItemMap: newsItemMap,
+      newsItem: newsItem,
+      onSave: () {
+        if (newsItem != null) {
+          DatabaseHelper.instance.insert(newsItem);  // Save to database
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Article saved!')),
+          );
+        }
+      },
+    );
+  },
+),
+
             ),
           ]),
         ),
       ),
+
+
       bottomNavigationBar: BottomNavigationBar(items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
             icon: IconButton(

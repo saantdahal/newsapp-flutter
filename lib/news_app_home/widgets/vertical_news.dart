@@ -8,14 +8,16 @@ class VerticalNewsWidget extends StatelessWidget {
     super.key,
     required this.newsItemMap,
     required this.newsItem,
+    required this.onSave, // Add the onSave callback
   });
 
   final Map<String, String> newsItemMap;
   final Articles? newsItem;
+  final VoidCallback onSave; // Save callback
 
   @override
   Widget build(BuildContext context) {
-    //vertical newsfeed
+    // Vertical newsfeed layout
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: Row(
@@ -78,14 +80,28 @@ class VerticalNewsWidget extends StatelessWidget {
                         bool isPressed =
                             newsProvider.favArticleList?.contains(newsItem) ??
                                 false;
-                        return IconButton(
-                          onPressed: () {
-                            newsProvider.toggleFav(newsItem);
-                          },
-                          icon: Icon(
-                            isPressed ? Icons.favorite : Icons.favorite_outline,
-                            color: Colors.red,
-                          ),
+                        return Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                newsProvider.toggleFav(newsItem);
+                              },
+                              icon: Icon(
+                                isPressed
+                                    ? Icons.favorite
+                                    : Icons.favorite_outline,
+                                color: Colors.red,
+                              ),
+                            ),
+                            // Save button for saving the article to the database
+                            IconButton(
+                              onPressed: onSave, // Call the onSave function
+                              icon: const Icon(
+                                Icons.save,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ],
                         );
                       },
                     ),
