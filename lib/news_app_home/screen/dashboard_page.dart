@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:newsapp/api/api.dart';
+import 'package:newsapp/core/api/api.dart';
 import 'package:newsapp/news_app_home/model/newsapp_model.dart';
 import 'package:newsapp/news_app_home/provider/favnews_provider.dart';
 import 'package:newsapp/news_app_home/widgets/hori.dart';
