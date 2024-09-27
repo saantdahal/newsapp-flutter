@@ -4,6 +4,7 @@ import 'package:newsapp/authencation/loginpage/screen/login_page.dart';
 import 'package:newsapp/authencation/signuppage/screen/signup_page.dart';
 import 'package:newsapp/news_app_home/provider/favnews_provider.dart';
 import 'package:newsapp/news_app_home/screen/dashboard_page.dart';
+import 'package:newsapp/news_app_home/screen/downloaded_news_page.dart';
 import 'package:newsapp/news_app_home/screen/fav_news_page.dart';
 import 'package:provider/provider.dart';
 
@@ -35,6 +36,7 @@ class _MyAppState extends State<MyApp> {
           '/loginPage': (context) => const LoginPage(),
           '/registerPage': (context) => const SignupPage(),
           '/favNewsPage': (context) => const FavNewsPage(),
+          '/downloadedNews':(context) => const DownloadScreen(),
         },
       ),
     );

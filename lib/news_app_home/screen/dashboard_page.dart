@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:newsapp/core/api/api.dart';
+import 'package:newsapp/core/utils/database/database_helper.dart';
 import 'package:newsapp/news_app_home/model/newsapp_model.dart';
 import 'package:newsapp/news_app_home/provider/favnews_provider.dart';
 import 'package:newsapp/news_app_home/widgets/hori.dart';
+import 'package:newsapp/news_app_home/widgets/vertical_news.dart';
 import 'package:provider/provider.dart';
 
 class NewsApp extends StatefulWidget {
@@ -102,55 +104,44 @@ class _NewsHomePageState extends State<NewsApp> {
               "Enjoy news with morning cofee",
               style: TextStyle(color: Colors.grey),
             ),
-            FutureBuilder(
-                future: ApiService().fetchNews(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else if (snapshot.hasError) {
-                    return const Center(
-                      child: Text("Error fetching data"),
-                    );
-                  } else if (snapshot.hasData) {
-                    final newsList = snapshot.data!;
-                    return SizedBox(
-                      height: 200,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: newsList.length,
-                        itemBuilder: (context, index) {
-                          final newsItem = newsList[index];
-                          final Map<String, String> newsItemMap = {
-                            'imageurl': newsItem.urlToImage ??
-                                'No image available', // Provide default image if null
-                            'headLine':
-                                newsItem.title ?? 'No headline available',
-                            'publishedAt': newsItem.publishedAt ??
-                                "Day of publishment unavailable",
-                            'news': newsItem.description ??
-                                'No news description available',
-                          };
-                          //horizontal news feed
 
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                context,
-                                '/newsPage',
-                                arguments: newsItemMap,
-                              );
-                            },
-                            // Pass the fetched API data to the widget
-                            child: HorizontalNewsWidget(newsItem: newsItem),
-                          );
-                        },
-                      ),
-                    );
-                  }
-                  return const SizedBox();
-                }),
+            FutureBuilder(
+              future: ApiService().fetchNews(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasError) {
+                  return const Center(
+                    child: Text("Error fetching data"),
+                  );
+                } else if (snapshot.hasData) {
+                  final newsList = snapshot.data!;
+                  return SizedBox(
+                    height: 200,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: newsList.length,
+                      itemBuilder: (context, index) {
+                        final newsItem = newsList[index];
+
+                        // Save article to the database when onSave is called
+                        return HorizontalNewsWidget(
+                          newsItem: newsItem,
+                          onSave: () {
+                            DatabaseHelper.instance.insert(
+                                newsItem); // Insert news item to the database
+                          },
+                        );
+                      },
+                    ),
+                  );
+                }
+                return const SizedBox();
+              },
+            ),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -200,18 +191,21 @@ class _NewsHomePageState extends State<NewsApp> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(items: <BottomNavigationBarItem>[
-        const BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home_filled,
-              color: Colors.blue,
-            ),
+        BottomNavigationBarItem(
+            icon: IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/newsHomePage');
+                },
+                icon: Icon(Icons.home, color: Colors.blue)),
             label: "Home"),
-        const BottomNavigationBarItem(
-            icon: Icon(
-              Icons.download_for_offline,
-              color: Colors.blue,
-            ),
-            label: "Downloads"),
+
+        BottomNavigationBarItem(
+            icon: IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/downloadedNews');
+                },
+                icon: Icon(Icons.download, color: Colors.blue)),
+            label: "Downloaded"),
         //reusable widget for fav icon
         BottomNavigationBarItem(
             icon: Consumer<FavNewsProvider>(

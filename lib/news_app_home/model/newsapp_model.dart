@@ -28,6 +28,7 @@ class NewsApiCalling {
 }
 
 class Articles {
+  int? id;
   Source? source;
   String? author;
   String? title;
@@ -38,7 +39,8 @@ class Articles {
   String? content;
 
   Articles(
-      {this.source,
+      {this.id,
+      this.source,
       this.author,
       this.title,
       this.description,
@@ -60,6 +62,7 @@ class Articles {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
     if (source != null) {
       data['source'] = source!.toJson();
     }
@@ -72,7 +75,21 @@ class Articles {
     data['content'] = content;
     return data;
   }
+
+  Map<String, dynamic> toMap() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['author'] = author;
+    data['title'] = title;
+    data['description'] = description;
+    data['url'] = url;
+    data['urlToImage'] = urlToImage;
+    data['publishedAt'] = publishedAt;
+    data['content'] = content;
+    return data;
+  }
 }
+
 class Source {
   String? id;
   String? name;
