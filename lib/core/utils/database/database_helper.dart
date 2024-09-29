@@ -1,4 +1,3 @@
-
 import 'package:newsapp/news_app_home/model/newsapp_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -11,7 +10,6 @@ class DatabaseHelper {
   static Database? _database;
 
   static const dbName = "news.db";
-
   static const tableName = "article";
 
   static const String columnAuthor = "author";
@@ -44,14 +42,14 @@ class DatabaseHelper {
             $columnUrl TEXT NOT NULL,
             $columnUrlToImage TEXT NOT NULL
           )
-          ''');
+        ''');
       },
     );
   }
 
+  // Insert a new article into the database
   Future<void> insert(Articles articles) async {
     final db = await database;
-    print(articles);
     await db!.insert(
       tableName,
       articles.toMap(),
@@ -59,9 +57,31 @@ class DatabaseHelper {
     );
   }
 
+  // Retrieve all articles from the database
   Future<List<Articles>?> getDatabaseArticles() async {
     final db = await database;
     final List<Map<String, dynamic>> retrieveData = await db!.query(tableName);
     return retrieveData.map((e) => Articles.fromJson(e)).toList();
+  }
+
+  // Delete an article from the database by its id
+  Future<void> deleteArticle(int id) async {
+    final db = await database;
+    await db!.delete(
+      tableName,
+      where: '$columnId = ?',
+      whereArgs: [id],
+    );
+  }
+
+  // Update an existing article in the database
+  Future<void> updateArticle(Map<String, dynamic> articleData) async {
+    final db = await database;
+    await db!.update(
+      tableName,
+      articleData,
+      where: '$columnId = ?',
+      whereArgs: [articleData[columnId]],
+    );
   }
 }
