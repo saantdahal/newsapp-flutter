@@ -5,17 +5,16 @@ class NewsApiCalling {
 
   NewsApiCalling({this.status, this.totalResults, this.articles});
 
+  // Factory constructor for creating an instance from JSON
   NewsApiCalling.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     totalResults = json['totalResults'];
-    if (json['articles'] != null) {
-      articles = <Articles>[];
-      json['articles'].forEach((v) {
-        articles!.add(Articles.fromJson(v));
-      });
-    }
+    articles = json['articles'] != null
+        ? (json['articles'] as List).map((v) => Articles.fromJson(v)).toList()
+        : [];
   }
 
+  // Convert the instance to JSON format
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['status'] = status;
@@ -28,7 +27,7 @@ class NewsApiCalling {
 }
 
 class Articles {
-  int? id ;
+  int? id;
   Source? source;
   String? author;
   String? title;
@@ -38,17 +37,19 @@ class Articles {
   String? publishedAt;
   String? content;
 
-  Articles(
-      {this.id,
-      this.source,
-      this.author,
-      this.title,
-      this.description,
-      this.url,
-      this.urlToImage,
-      this.publishedAt,
-      this.content});
+  Articles({
+    this.id,
+    this.source,
+    this.author,
+    this.title,
+    this.description,
+    this.url,
+    this.urlToImage,
+    this.publishedAt,
+    this.content,
+  });
 
+  // Factory constructor for creating an instance from JSON
   Articles.fromJson(Map<String, dynamic> json) {
     source = json['source'] != null ? Source.fromJson(json['source']) : null;
     author = json['author'];
@@ -60,6 +61,7 @@ class Articles {
     content = json['content'];
   }
 
+  // Convert the instance to JSON format
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
@@ -76,6 +78,7 @@ class Articles {
     return data;
   }
 
+  // Convert the instance to a map format for database use
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
@@ -96,11 +99,13 @@ class Source {
 
   Source({this.id, this.name});
 
+  // Factory constructor for creating an instance from JSON
   Source.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
   }
 
+  // Convert the instance to JSON format
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;

@@ -82,11 +82,13 @@ class _DownloadScreenState extends State<DownloadScreen> {
                                   ),
                                   TextButton(
                                     onPressed: () {
+                                      print("Article ID: ${article.id}");
                                       if (article.id != null) {
+                                        
                                         _deleteNews(
-                                            article.id!); // Use null assertion
+                                            article.id!); 
                                       } else {
-                                        // Handle case where ID is null (optional)
+                                        
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           SnackBar(
