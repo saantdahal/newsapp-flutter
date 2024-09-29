@@ -28,7 +28,7 @@ class NewsApiCalling {
 }
 
 class Articles {
-  int? id;
+  int? id ;
   Source? source;
   String? author;
   String? title;
