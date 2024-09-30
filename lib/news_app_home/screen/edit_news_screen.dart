@@ -75,10 +75,12 @@ class EditNewsScreenState extends State<EditNewsScreen> {
             TextField(
               controller: _titleController,
               decoration: InputDecoration(labelText: "Title"),
+
             ),
             TextField(
               controller: _descriptionController,
               decoration: InputDecoration(labelText: "Description"),
+
             ),
           ],
         ),
