@@ -36,9 +36,11 @@ class _MyAppState extends State<MyApp> {
 
   // Initialize FCM and get the token
   void _initializeFCM() async {
-    String? token = await _pushNotificationService.getFcmToken();
-    print(
-        'FCM Token from main.dart: $token'); // This should print the FCM token
+    String? token =
+        await _pushNotificationService.getFcmToken(); // Fetch the token
+    await _pushNotificationService
+        .foregroundMessaging(); // Call foreground messaging
+    print('FCM Token from main.dart: $token'); // Print the token
   }
 
   @override
