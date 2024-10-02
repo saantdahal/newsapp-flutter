@@ -25,6 +25,7 @@ class LoginButtonPress extends StatelessWidget {
     String enteredPassword = passwordController.text;
 
     if (enteredEmail == storedEmail && enteredPassword == storedPassword) {
+      // ignore: use_build_context_synchronously
       Navigator.pushNamed(context, '/ShowDataPage');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
