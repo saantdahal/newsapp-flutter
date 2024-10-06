@@ -10,7 +10,6 @@ import 'package:newsapp/news_app_home/screen/dashboard_page.dart';
 import 'package:newsapp/news_app_home/screen/downloaded_news_page.dart';
 import 'package:newsapp/news_app_home/screen/fav_news_page.dart';
 import 'package:provider/provider.dart';
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
