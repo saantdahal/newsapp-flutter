@@ -38,7 +38,7 @@ class _MyAppState extends State<MyApp> {
         await _pushNotificationService.getFcmToken(); // Fetch the token
     await _pushNotificationService
         .foregroundMessaging(); // Call foreground messaging
-    print('FCM Token from main.dart: $token'); // Print the token
+    debugPrint('FCM Token from system: $token'); // Print the token
   }
 
   @override
