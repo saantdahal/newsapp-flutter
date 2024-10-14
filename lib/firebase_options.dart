@@ -57,7 +57,6 @@ class DefaultFirebaseOptions {
     projectId: 'newsapp-e8764',
     storageBucket: 'newsapp-e8764.appspot.com',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBteIijKYp_bIFc0sPpLaG-9lrwY4kuBhU',
     appId: '1:160360809616:ios:d0a220d8d37ea2d2570415',
