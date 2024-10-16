@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:newsapp/authencation/defaultpage/screen/main_page.dart';
 import 'package:newsapp/authencation/loginpage/screen/login_page.dart';
 import 'package:newsapp/authencation/signuppage/screen/signup_page.dart';
+import 'package:newsapp/core/animation/implicit_test.dart';
 import 'package:newsapp/core/notification/push_notification.dart';
 import 'package:newsapp/firebase_options.dart';
 import 'package:newsapp/news_app_home/provider/favnews_provider.dart';
@@ -10,6 +11,7 @@ import 'package:newsapp/news_app_home/screen/dashboard_page.dart';
 import 'package:newsapp/news_app_home/screen/downloaded_news_page.dart';
 import 'package:newsapp/news_app_home/screen/fav_news_page.dart';
 import 'package:provider/provider.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -22,6 +24,7 @@ class MyApp extends StatefulWidget {
   @override
   State<MyApp> createState() => _MyAppState();
 }
+
 class _MyAppState extends State<MyApp> {
   final PushNotificationService _pushNotificationService =
       PushNotificationService();
@@ -53,7 +56,8 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         //home: const MainPage(),
         routes: {
-          '/': (context) => const MainLoginPage(),
+          //'/': (context) => const MainLoginPage(),
+          '/': (context) =>  ImplicitTest(),
           '/newsHomePage': (context) => const NewsApp(),
           '/loginPage': (context) => const LoginPage(),
           '/registerPage': (context) => const SignupPage(),
