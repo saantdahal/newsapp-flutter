@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ImplicitTest extends StatefulWidget {
-  ImplicitTest({super.key});
+  const ImplicitTest({super.key});
 
   @override
   _ImplicitTestState createState() => _ImplicitTestState();

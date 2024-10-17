@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:newsapp/authencation/defaultpage/screen/main_page.dart';
 import 'package:newsapp/authencation/loginpage/screen/login_page.dart';
 import 'package:newsapp/authencation/signuppage/screen/signup_page.dart';
 import 'package:newsapp/core/animation/implicit_test.dart';
