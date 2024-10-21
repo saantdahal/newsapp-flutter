@@ -1,8 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:newsapp/authencation/defaultpage/screen/main_page.dart';
 import 'package:newsapp/authencation/loginpage/screen/login_page.dart';
 import 'package:newsapp/authencation/signuppage/screen/signup_page.dart';
-import 'package:newsapp/core/animation/implicit_test.dart';
 import 'package:newsapp/core/notification/push_notification.dart';
 import 'package:newsapp/firebase_options.dart';
 import 'package:newsapp/news_app_home/provider/favnews_provider.dart';
@@ -55,8 +55,8 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         //home: const MainPage(),
         routes: {
-          //'/': (context) => const MainLoginPage(),
-          '/': (context) =>  ImplicitTest(),
+          '/': (context) => const MainLoginPage(),
+          // '/': (context) =>  ImplicitTest(),
           '/newsHomePage': (context) => const NewsApp(),
           '/loginPage': (context) => const LoginPage(),
           '/registerPage': (context) => const SignupPage(),
