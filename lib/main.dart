@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:newsapp/authencation/defaultpage/screen/main_page.dart';
 import 'package:newsapp/authencation/loginpage/screen/login_page.dart';
 import 'package:newsapp/authencation/signuppage/screen/signup_page.dart';
+import 'package:newsapp/core/animation/implicit_test.dart';
 import 'package:newsapp/core/notification/push_notification.dart';
 import 'package:newsapp/firebase_options.dart';
 import 'package:newsapp/news_app_home/provider/favnews_provider.dart';
@@ -56,7 +57,7 @@ class _MyAppState extends State<MyApp> {
         //home: const MainPage(),
         routes: {
           '/': (context) => const MainLoginPage(),
-          // '/': (context) =>  ImplicitTest(),
+          'animation': (context) => ImplicitTest(),
           '/newsHomePage': (context) => const NewsApp(),
           '/loginPage': (context) => const LoginPage(),
           '/registerPage': (context) => const SignupPage(),
