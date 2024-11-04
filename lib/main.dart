@@ -43,7 +43,6 @@ class _MyAppState extends State<MyApp> {
         .foregroundMessaging(); // Call foreground messaging
     debugPrint('The FCM token are here: $token'); // Print the token
   }
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
